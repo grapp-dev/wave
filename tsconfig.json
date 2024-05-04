@@ -1,0 +1,8 @@
+{
+  "extends": "@grapp/ts-config/default.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "types": ["bun-types"]
+  },
+  "include": ["./src/**/*", "./__tests__/**/*.ts", "./__tests__/**/*.tsx"]
+}

@@ -1,0 +1,52 @@
+{
+  "name": "@grapp/wave",
+  "description": "",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Marcin Dziewulski <hello@mobily.pl>",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.mts",
+  "files": [
+    "src",
+    "lib",
+    "*.md",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "rm -rf ./lib && tsup",
+    "types:check": "tsc --noEmit"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "homepage": "https://wave.grapp.dev",
+  "bugs": "https://github.com/grapp-dev/wave/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grapp-dev/wave.git"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@grapp/eslint-config": "^0.1.2",
+    "@grapp/prettier-config": "^0.1.1",
+    "@grapp/ts-config": "^0.1.3",
+    "@happy-dom/global-registrator": "^14.7.1",
+    "@testing-library/react": "^15.0.6",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@types/node": "^20.12.8",
+    "@types/react": "~18.3.1",
+    "bun-types": "^1.1.4",
+    "react": "^18.3.1",
+    "react-test-renderer": "^18.3.1",
+    "tsup": "^8.0.2"
+  },
+  "dependencies": {
+    "wonka": "^6.3.4"
+  }
+}
