@@ -3,7 +3,7 @@ import { describe, expect, it } from 'bun:test';
 import { makeBehaviorSubject, makeSubject, Resource } from '../src';
 
 describe('Resource', () => {
-  it('should unsubscribe Observable when destroy during initial success state', () => {
+  it('should unsubscribe source when destroy during initial success state', () => {
     const subject = makeBehaviorSubject(1);
     const resource = new Resource(subject.source);
     expect(resource.read()).toBe(1);
@@ -16,7 +16,7 @@ describe('Resource', () => {
     expect(resource.isDestroyed).toBe(true);
   });
 
-  it('should unsubscribe Observable when destroy during success state', () => {
+  it('should unsubscribe source when destroy during success state', () => {
     const subject = makeSubject<number>();
     const resource = new Resource(subject.source);
     expect(() => resource.read()).toThrow(Promise);
