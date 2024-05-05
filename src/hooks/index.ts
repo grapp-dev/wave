@@ -6,3 +6,4 @@ export * from './useSourceCallback';
 export * from './useSubscription';
 export * from './useSourceSuspense';
 export * from './useResource';
+export * from './useSourceRef';
