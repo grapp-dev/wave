@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import { describe, expect, it, jest } from 'bun:test';
 
-import { Source, subscribe, useSourceCallback } from '../../src';
+import { map, pipe, Source, subscribe, useSourceCallback } from '../../src';
 
 const identity = <T>(source: Source<T>) => {
   return source;
@@ -33,7 +33,12 @@ describe('useSourceCallback', () => {
 
   it('should emit value when the callback is called', () => {
     const { result } = renderHook(() => {
-      return useSourceCallback<string>(identity);
+      return useSourceCallback<string, number>(source => {
+        return pipe(
+          source,
+          map(value => value.length),
+        );
+      });
     });
     const [source, onChange] = result.current;
     const spy = jest.fn();
@@ -41,15 +46,22 @@ describe('useSourceCallback', () => {
     expect(spy).toBeCalledTimes(0);
     onChange('hello');
     expect(spy).toBeCalledTimes(1);
-    expect(spy).lastCalledWith('hello');
-    onChange('world');
+    expect(spy).lastCalledWith(5);
+    onChange('world!');
     expect(spy).toBeCalledTimes(2);
-    expect(spy).lastCalledWith('world');
+    expect(spy).lastCalledWith(6);
   });
 
   it('should get the selected argument from selector', () => {
     const { result } = renderHook(() => {
-      return useSourceCallback<string, string, [boolean, string]>(identity, (_, str) => str);
+      return useSourceCallback<string, string, [boolean, string]>(source => {
+        return pipe(
+          source,
+          map(args => {
+            return args[1];
+          }),
+        );
+      });
     });
     const [source, onChange] = result.current;
     const spy = jest.fn();
