@@ -13,7 +13,7 @@ const identity = (source: unknown) => {
 export function useSourceCallback<E = void>(): [Source<E>, (event: E) => void];
 export function useSourceCallback<O, P = O, E extends unknown[] = [O]>(
   initFn: (source: Source<E['length'] extends infer T ? (T extends 1 ? O : E) : E>) => Source<P>,
-): [Source<O>, (...events: E) => void];
+): [Source<P>, (...events: E) => void];
 
 export function useSourceCallback<O, E extends unknown[]>(
   initFn = identity as (source: Source<E>) => Source<O>,
