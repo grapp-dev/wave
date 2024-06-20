@@ -1,8 +1,9 @@
 import * as React from 'react';
 
-import { Source } from 'wonka';
+import { map, pipe, Source } from 'wonka';
 
 import { useLazy } from './useLazy';
+import { useSource } from './useSource';
 import { useSubject } from './useSubject';
 
 const identity = (source: unknown) => {
@@ -10,25 +11,28 @@ const identity = (source: unknown) => {
 };
 
 export function useSourceCallback<E = void>(): [Source<E>, (event: E) => void];
-export function useSourceCallback<O, E = O>(
-  initFn: (source: Source<E>) => Source<O>,
-): [Source<O>, (event: E) => void];
-export function useSourceCallback<O = undefined, E = O, P extends any[] = [E]>(
-  initFn: (source: Source<E>) => Source<O>,
-  selectorFn: (...args: P) => E,
-): [Source<O>, (...args: P) => void];
+export function useSourceCallback<O, E extends unknown[] = [O]>(
+  initFn: (source: Source<E['length'] extends infer T ? (T extends 1 ? O : E) : E>) => Source<O>,
+): [Source<O>, (...events: E) => void];
 
-export function useSourceCallback<O = undefined, E = O, P extends any[] = [E]>(
+export function useSourceCallback<O, E extends unknown[]>(
   initFn = identity as (source: Source<E>) => Source<O>,
-  selectorFn?: (...args: P) => O,
-): readonly [Source<O>, (...args: P) => void] {
+): readonly [Source<O>, (...args: E) => void] {
   const subject = useSubject<E>();
+  const main = useSource(() => {
+    return pipe(
+      subject.source,
+      map(args => {
+        return args.length === 1 ? (args[0] as E) : args;
+      }),
+    );
+  });
   const source = useLazy(() => {
-    return initFn(subject.source);
+    return initFn(main);
   });
 
-  const callbackFn = React.useCallback((...args: P) => {
-    subject.next(typeof selectorFn === 'function' ? selectorFn(...args) : args[0]);
+  const callbackFn = React.useCallback((...args: E) => {
+    subject.next(args);
   }, []);
 
   return [source, callbackFn] as const;
