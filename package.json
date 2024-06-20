@@ -1,7 +1,7 @@
 {
   "name": "@grapp/wave",
   "description": "Bring the power of reactive programming to your React applications.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "author": "Marcin Dziewulski <hello@mobily.pl>",
   "react-native": "src/index.ts",
